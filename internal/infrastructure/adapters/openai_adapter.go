@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/ivan-salazar14/send-promt-ai/internal/domain/ports"
@@ -35,17 +36,18 @@ func (a *OpenAIAdapter) GenerateText(ctx context.Context, prompt string) (string
 	req.Header.Set("Authorization", "Bearer "+a.APIKey)
 	req.Header.Set("Content-Type", "application/json")
 
+	log.Printf("Sending request to OpenAI with prompt: %s", prompt)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
 	}
 	defer resp.Body.Close()
-
+	log.Printf("Response status: %d", resp.StatusCode)
 	if resp.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("openai api error: status %d", resp.StatusCode)
 	}
-
+	log.Printf("Response body: %s", resp.Body)
 	var result struct {
 		Choices []struct {
 			Message struct {

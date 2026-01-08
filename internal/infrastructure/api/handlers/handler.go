@@ -21,7 +21,6 @@ func (h *AIHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// El Caso de Uso maneja la concurrencia internamente
 	response, err := h.UseCase.Execute(r.Context(), body.Prompt)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

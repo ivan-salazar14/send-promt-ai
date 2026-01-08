@@ -17,7 +17,7 @@ type Config struct {
 func Load() *Config {
 	return &Config{
 		Port:           getEnv("PORT", "8080"),
-		OpenAIKey:      getEnv("OPENAI_API_KEY", ""),
+		OpenAIKey:      getEnv("OPENAI_API_KEY", "AIzaSyCmAPFxJHzpDXyoXL6CT9AZD42L8JIktzw"),
 		InternalToken:  getEnv("INTERNAL_AUTH_TOKEN", "default-secret-token"),
 		MaxWorkers:     getEnvAsInt("MAX_WORKERS", 10),
 		QueueSize:      getEnvAsInt("QUEUE_SIZE", 100),

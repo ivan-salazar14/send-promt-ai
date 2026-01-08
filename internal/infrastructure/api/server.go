@@ -11,7 +11,6 @@ import (
 func RunServer(cfg *config.Config) error {
 	mux := http.NewServeMux()
 
-	// Pasamos la config a la factory
 	aiHandler := handlers.NewAIHandler(cfg)
 
 	mux.HandleFunc("POST /process", aiHandler.Handle)

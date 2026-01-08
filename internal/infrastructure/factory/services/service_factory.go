@@ -7,8 +7,7 @@ import (
 )
 
 func NewAIService(cfg *config.Config) ports.AIServicePort {
-	return &adapters.OpenAIAdapter{
+	return &adapters.GeminiAdapter{
 		APIKey: cfg.OpenAIKey,
-		URL:    cfg.OpenAIEndpoint,
 	}
 }

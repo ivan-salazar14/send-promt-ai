@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"context"
+	"log"
 
 	"github.com/ivan-salazar14/send-promt-ai/internal/domain/ports"
 )
@@ -33,6 +34,7 @@ func (uc *ProcessAIUseCase) startWorkers() {
 	for i := 0; i < uc.maxWorkers; i++ {
 		go func() {
 			for j := range uc.jobQueue {
+				log.Printf("Worker processing prompt: %s", j.prompt)
 				res, err := uc.aiService.GenerateText(j.ctx, j.prompt)
 				j.result <- res
 				j.err <- err
@@ -45,6 +47,7 @@ func (uc *ProcessAIUseCase) Execute(ctx context.Context, prompt string) (string,
 	resChan := make(chan string)
 	errChan := make(chan error)
 
+	log.Printf("Queuing prompt: %s", prompt)
 	uc.jobQueue <- job{prompt: prompt, result: resChan, err: errChan, ctx: ctx}
 
 	select {

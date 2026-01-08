@@ -8,10 +8,8 @@ import (
 )
 
 func main() {
-	// 1. Cargar configuración al inicio
 	cfg := config.Load()
 
-	// 2. Ejecutar servidor pasando la configuración
 	if err := api.RunServer(cfg); err != nil {
 		log.Fatal(err)
 	}
