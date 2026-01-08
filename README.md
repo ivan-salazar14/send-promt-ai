@@ -12,8 +12,8 @@ This project is a high-performance Go-based microservice that functions as a con
 
 ## Prerequisites
 
-- Go 1.21 or higher
-- An OpenAI API Key
+- Go 1.22+ or higher
+- An AI API Key (OpenAI or Gemini)
 
 ## Installation
 
@@ -33,14 +33,14 @@ This project is a high-performance Go-based microservice that functions as a con
    ```sh
    cp .env.example .env
    ```
-   Edit the `.env` file to add your `OPENAI_API_KEY` and other settings.
+   Edit the `.env` file to add your `AI_API_KEY` and other settings.
 
 ## Configuration
 
 The application is configured via the following environment variables in the `.env` file:
 
 - `PORT`: The port on which the server will listen (default: `8080`).
-- `OPENAI_API_KEY`: Your secret key for the OpenAI API.
+- `AI_API_KEY`: Your secret key for the OpenAI or Gemini API.
 - `INTERNAL_AUTH_TOKEN`: A secret token for securing the API endpoint.
 - `MAX_WORKERS`: The number of concurrent workers in the pool (default: `5`).
 - `QUEUE_SIZE`: The capacity of the job queue (default: `100`).
@@ -73,11 +73,15 @@ You can use the provided test script to send multiple concurrent requests to the
 
 This script will send five simultaneous requests to the `/process` endpoint and display the responses from the server.
 
-###
-Componente,Capa,Ubicación,Responsabilidad
-AIServicePort,Dominio,domain/ports,Define qué puede hacer un servicio de IA.
-OpenAIAdapter,Infraestructura,infrastructure/adapters,Implementa la llamada real a OpenAI.
-ProcessAIUseCase,Aplicación,application/usecases,Maneja la cola de trabajos y las goroutines.
-AIHandler,Infraestructura,infrastructure/http/handlers,Traduce el protocolo HTTP a lógica de aplicación.
-RunServer,Infraestructura,infrastructure/http,Configura y levanta el servidor net/http.
-###
+## Design Decisions
+
+- **The Dispatcher Location**: Placed in the application layer because the strategy for handling jobs is a business-logic requirement for performance.
+- **Context Propagation**: All requests use context.Context to ensure that if a client cancels a request, the AI call is terminated immediately, saving costs and resources.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the GPL-3.0 License.
