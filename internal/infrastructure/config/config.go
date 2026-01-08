@@ -14,7 +14,7 @@ type Config struct {
 	OpenAIEndpoint string
 }
 
-func LoadConfig() *Config {
+func Load() *Config {
 	return &Config{
 		Port:           getEnv("PORT", "8080"),
 		OpenAIKey:      getEnv("OPENAI_API_KEY", ""),

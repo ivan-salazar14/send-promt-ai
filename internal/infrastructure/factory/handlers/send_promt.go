@@ -1,21 +1,18 @@
 package handlers
 
 import (
-	"os"
-	"strconv"
-
 	"github.com/ivan-salazar14/send-promt-ai/internal/application/usecases"
+	"github.com/ivan-salazar14/send-promt-ai/internal/infrastructure/api/handlers"
+	"github.com/ivan-salazar14/send-promt-ai/internal/infrastructure/config"
 	"github.com/ivan-salazar14/send-promt-ai/internal/infrastructure/factory/services"
-	"github.com/ivan-salazar14/send-promt-ai/internal/infrastructure/http/handlers"
 )
 
-func NewAIHandler() *handlers.AIHandler {
-	aiService := services.NewAIService()
+func NewAIHandler(cfg *config.Config) *handlers.AIHandler {
+	// Inyectamos la config en la factory de servicios
+	aiService := services.NewAIService(cfg)
 
-	workers, _ := strconv.Atoi(os.Getenv("MAX_WORKERS"))
-	queueSize, _ := strconv.Atoi(os.Getenv("QUEUE_SIZE"))
-
-	useCase := usecases.NewProcessAIUseCase(aiService, workers, queueSize)
+	// Inyectamos valores de la config en el Caso de Uso
+	useCase := usecases.NewProcessAIUseCase(aiService, cfg.MaxWorkers, cfg.QueueSize)
 
 	return &handlers.AIHandler{
 		UseCase: useCase,

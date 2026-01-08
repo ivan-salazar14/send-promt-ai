@@ -4,12 +4,15 @@ import (
 	"log"
 
 	"github.com/ivan-salazar14/send-promt-ai/internal/infrastructure/api"
+	"github.com/ivan-salazar14/send-promt-ai/internal/infrastructure/config"
 )
 
 func main() {
-	log.Println("Starting AI Gateway service...")
-	// El main solo invoca el arranque del servidor
-	if err := api.RunServer(); err != nil {
+	// 1. Cargar configuración al inicio
+	cfg := config.Load()
+
+	// 2. Ejecutar servidor pasando la configuración
+	if err := api.RunServer(cfg); err != nil {
 		log.Fatal(err)
 	}
 }
